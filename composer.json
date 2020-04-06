@@ -1,0 +1,21 @@
+{
+  "name": "amig/dbhandler",
+  "description": "A query builder to simplify the process of running queries with mySQL (using MysqliDb)",
+  "type": "library",
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.2.0",
+    "joshcam/mysqli-database-class": "^2.9"
+  },
+  "autoload": {
+    "psr-0": {
+      "dbHandler": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Ami Geva",
+      "email": "ami.geva@gmail.com"
+    }
+  ]
+}
