@@ -1,6 +1,6 @@
 <?php
 
-namespace dbHandler;
+namespace queryHelper;
 
 use MysqliDb;
 

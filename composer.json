@@ -1,5 +1,5 @@
 {
-  "name": "amig/dbhandler",
+  "name": "amig/queryHelper",
   "description": "A query builder to simplify the process of running queries with mySQL (using MysqliDb)",
   "type": "library",
   "minimum-stability": "dev",
@@ -9,7 +9,7 @@
   },
   "autoload": {
     "psr-0": {
-      "dbHandler": "src/"
+      "queryHelper": "src/"
     }
   },
   "authors": [
