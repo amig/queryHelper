@@ -3,7 +3,7 @@
   "description": "A query builder to simplify the process of running queries with mySQL (using MysqliDb)",
   "type": "library",
   "minimum-stability": "stable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "require": {
     "php": ">=7.2.0",
     "joshcam/mysqli-database-class": "^2.9"
