@@ -2,7 +2,7 @@
   "name": "amig/queryhelper",
   "description": "A query builder to simplify the process of running queries with mySQL (using MysqliDb)",
   "type": "library",
-  "minimum-stability": "dev",
+  "minimum-stability": "0.0.1",
   "require": {
     "php": ">=7.2.0",
     "joshcam/mysqli-database-class": "^2.9"
