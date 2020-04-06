@@ -1,5 +1,5 @@
 {
-  "name": "amig/queryHelper",
+  "name": "amig/queryhelper",
   "description": "A query builder to simplify the process of running queries with mySQL (using MysqliDb)",
   "type": "library",
   "minimum-stability": "dev",
