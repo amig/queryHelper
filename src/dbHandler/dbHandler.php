@@ -21,6 +21,11 @@ class dbHandler {
     $this->db = new MysqliDb($config);
   }
 
+  /**
+   * Clear sort clause and set it to an empty string
+   *
+   * @return $this
+   */
   public function clearSort() {
     $this->sort = '';
     return $this;
@@ -41,6 +46,11 @@ class dbHandler {
     return $this;
   }
 
+  /**
+   * Clear the where clause and set it to empty string
+   *
+   * @return $this
+   */
   public function clearWhere() {
     $this->where = '';
     return $this;
