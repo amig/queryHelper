@@ -164,15 +164,17 @@ class dbHandler {
   /**
    * Build a union query from the private $union var
    *
+   * @param string $type Default DISTINCT
    * @return $this
    * @throws \Exception
    */
-  public function buildUnionQuery() {
+  public function buildUnionQuery($type = 'DISTINCT') {
     if (empty($this->union)) {
       throw new \Exception('Cannot build a union query', 500);
     }
 
-    $this->query = implode(' UNION ', $this->union);
+    $this->query = implode(" UNION {$type} ", $this->union);
+    $this->union = [];
 
     return $this;
   }
