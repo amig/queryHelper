@@ -221,8 +221,7 @@ class dbHandler {
    */
   public function getAll($tableName, $columnList = '*', $offset = null, $limit = null) {
     try {
-      $res = $this->db
-          ->buildQuery($tableName, $columnList, $offset, $limit)
+      $res = $this->buildQuery($tableName, $columnList, $offset, $limit)
           ->runQuery();
     } catch (\Exception $ex) {
       throw new \Exception($ex->getMessage(), $ex->getCode());
