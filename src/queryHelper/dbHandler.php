@@ -6,8 +6,29 @@ use MysqliDb;
 
 class dbHandler {
 
-  private $sort = '';
+  /**
+   *
+   * @var string
+   */
+  private $query;
+
+  /**
+   *
+   * @var string
+   */
   private $where = '';
+
+  /**
+   *
+   * @var string
+   */
+  private $sort = '';
+
+  /**
+   *
+   * @var array
+   */
+  private $union = [];
 
   public function __construct($config) {
     $this->init($config);
@@ -97,18 +118,99 @@ class dbHandler {
   }
 
   /**
-   * Run the query and get one (first) result
+   * Build the query for the selected column list with limit and offset
    *
    * @param string $tableName
    * @param string $columnList Default *
-   * @return Array
+   * @param int $offset Default null
+   * @param int $limit Default null
+   * @return array
+   * @throws \Exception
+   */
+  public function buildQuery($tableName, $columnList = '*', $offset = null, $limit = null) {
+    $l = '';
+    if (!is_null($offset)) {
+      $l .= " LIMIT {$offset}";
+      if ($limit) {
+        $l .= ", {$limit}";
+      }
+    }
+
+    $this->query = "SELECT {$columnList} FROM {$tableName}{$this->where}{$this->sort}{$l}";
+
+    return $this;
+  }
+
+  /**
+   * Adds a query to the union array and reset query, where and sort vars
+   *
+   * @return $this
+   * @throws \Exception
+   */
+  public function addQueryToUnion() {
+    if (empty($this->query)) {
+      throw new \Exception('Cannot add an empty query to union', 500);
+    }
+
+    $this->union[] = $this->query;
+    // Reset all vars
+    $this->query = '';
+    $this->where = '';
+    $this->sort = '';
+
+    return $this;
+  }
+
+  /**
+   * Build a union query from the private $union var
+   *
+   * @return $this
+   * @throws \Exception
+   */
+  public function buildUnionQuery() {
+    if (empty($this->union)) {
+      throw new \Exception('Cannot build a union query', 500);
+    }
+
+    $this->query = implode(' UNION ', $this->union);
+
+    return $this;
+  }
+
+  /**
+   * Run the query stored in the private $query var
+   *
+   * @return array
+   * @throws \Exception
+   */
+  public function runQuery() {
+    if (empty($this->query)) {
+      throw new \Exception('Cannot run an empty query', 500);
+    }
+
+    try {
+      $res = $this->db
+          ->rawQuery($this->query);
+    } catch (\Exception $ex) {
+      throw new \Exception($ex->getMessage(), $ex->getCode());
+    }
+
+    return $res;
+  }
+
+  /**
+   * Build and run a single query and get one (first) result
+   *
+   * @param string $tableName
+   * @param string $columnList Default *
+   * @return array
    */
   public function getOne($tableName, $columnList = '*') {
     return $this->getAll($tableName, $columnList, 0, 1);
   }
 
   /**
-   * Run the query and get all results in accordance with the limit and offset
+   * Build and run a single query and get all results in accordance with the limit and offset
    *
    * @param string $tableName
    * @param string $columnList Default *
@@ -118,17 +220,10 @@ class dbHandler {
    * @throws \Exception
    */
   public function getAll($tableName, $columnList = '*', $offset = null, $limit = null) {
-    $l = '';
-    if (!is_null($offset)) {
-      $l .= " LIMIT {$offset}";
-      if ($limit) {
-        $l .= ", {$limit}";
-      }
-    }
-
     try {
       $res = $this->db
-          ->rawQuery("SELECT {$columnList} FROM {$tableName}{$this->where}{$this->sort}{$l}");
+          ->buildQuery($tableName, $columnList, $offset, $limit)
+          ->runQuery();
     } catch (\Exception $ex) {
       throw new \Exception($ex->getMessage(), $ex->getCode());
     }
