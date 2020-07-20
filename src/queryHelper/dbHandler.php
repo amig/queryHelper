@@ -182,10 +182,13 @@ class dbHandler {
   /**
    * Run the query stored in the private $query var
    *
+   * @param string $query If a query string is supplied it will be run
    * @return array
    * @throws \Exception
    */
-  public function runQuery() {
+  public function runQuery($query = null) {
+    $this->query = ($query) ? $query : $this->query;
+
     if (empty($this->query)) {
       throw new \Exception('Cannot run an empty query', 500);
     }
